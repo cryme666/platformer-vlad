@@ -7,7 +7,7 @@ pygame.display.set_caption("Platformer")
 
 WIDTH, HEIGHT = 1000, 800
 FPS = 60
-PLAYER_VEL = 5
+PLAYER_VEL = 5  
 
 window = pygame.display.set_mode((WIDTH, HEIGHT))
 
@@ -140,6 +140,11 @@ class Player(pygame.sprite.Sprite):
     def draw(self, win, offset_x):
         win.blit(self.sprite, (self.rect.x - offset_x, self.rect.y))
 
+    def make_hit(self):
+        self.hit = True
+
+    def hit_head(self):
+        self.y_vel *= -1 
 
 class Object(pygame.sprite.Sprite):
     def __init__(self, x, y, width, height, name=None):
@@ -248,8 +253,7 @@ def main(window):
 
     floor = [Block(i * block_size, HEIGHT - block_size, block_size)
              for i in range(-WIDTH // block_size, (WIDTH * 2) // block_size)]
-    objects = [*floor]
-
+    objects = [*floor,Block(0,HEIGHT-block_size*2,block_size),Block(block_size*3,HEIGHT-block_size*4,block_size)]
     offset_x = 0
     scroll_area_width = 200
 
