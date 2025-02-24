@@ -140,9 +140,9 @@ class Player(pygame.sprite.Sprite):
     def draw(self, win, offset_x):
         win.blit(self.sprite, (self.rect.x - offset_x, self.rect.y))
 
-    def make_hit(self):
+    def make_hit(self,obj = None):
         self.hit = True
-        
+
 
     def hit_head(self):
         self.y_vel *= -1 
