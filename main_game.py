@@ -68,6 +68,7 @@ class Player(pygame.sprite.Sprite):
         self.jump_count = 0
         self.hit = False
         self.hit_count = 0
+        self.health = 10
 
     def jump(self):
         self.y_vel = -self.GRAVITY * 8
@@ -93,10 +94,14 @@ class Player(pygame.sprite.Sprite):
             self.animation_count = 0
 
     def loop(self, fps):
+        print(self.health)
+
         self.y_vel += min(1, (self.fall_count / fps) * self.GRAVITY)
         self.move(self.x_vel, self.y_vel)
 
         if self.hit:
+            if self.hit_count == 0:
+                self.health -= 1
             self.hit_count += 1
         if self.hit_count > fps * 2:
             self.hit = False
@@ -142,6 +147,7 @@ class Player(pygame.sprite.Sprite):
 
     def make_hit(self,obj = None):
         self.hit = True
+        # self.health -= 1 
 
 
     def hit_head(self):
@@ -169,7 +175,7 @@ class Block(Object):
 
 class Fire(Object):
     def __init__(self,x,y,width,height):
-        self.ANIMATION_DELAY = 3
+        self.ANIMATION_DELAY = 10
         super().__init__(x,y,width,height,'fire')
         self.fire = load_sprite_sheets('Traps','Fire',width,height)
         self.image = self.fire['on'][0]
@@ -187,7 +193,7 @@ class Fire(Object):
     def loop(self):
         sprites = self.fire[self.animation_name]
         sprite_index = (self.animation_count // self.ANIMATION_DELAY) % len(sprites)
-        print(sprite_index)
+        # print(sprite_index)
 
         self.image = sprites[sprite_index]
         self.animation_count += 1
@@ -197,10 +203,6 @@ class Fire(Object):
 
         if self.animation_count // self.ANIMATION_DELAY > len(sprites):
             self.animation_count = 0
-
-
-
-
 
 
 def get_background(name):
